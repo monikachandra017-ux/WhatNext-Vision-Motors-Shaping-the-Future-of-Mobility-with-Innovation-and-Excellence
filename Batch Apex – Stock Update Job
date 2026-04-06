@@ -1,0 +1,24 @@
+global class VehicleStockBatch implements Database.Batchable<SObject> {
+
+    global Database.QueryLocator start(Database.BatchableContext bc) {
+        return Database.getQueryLocator(
+            'SELECT Id, Stock__c FROM Vehicle__c'
+        );
+    }
+
+    global void execute(Database.BatchableContext bc, List<Vehicle__c> scope) {
+
+        for (Vehicle__c v : scope) {
+            // Example: Reduce stock randomly (simulate updates)
+            if (v.Stock__c > 0) {
+                v.Stock__c = v.Stock__c - 1;
+            }
+        }
+
+        update scope;
+    }
+
+    global void finish(Database.BatchableContext bc) {
+        System.debug('Stock update batch completed.');
+    }
+}
