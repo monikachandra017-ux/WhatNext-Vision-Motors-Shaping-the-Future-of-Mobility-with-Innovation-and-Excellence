@@ -1,0 +1,17 @@
+global class OrderScheduler implements Schedulable {
+
+    global void execute(SchedulableContext sc) {
+
+        List<Vehicle_Order__c> orders = [
+            SELECT Id, Status__c 
+            FROM Vehicle_Order__c 
+            WHERE Status__c = 'Pending'
+        ];
+
+        for (Vehicle_Order__c order : orders) {
+            order.Status__c = 'Processed';
+        }
+
+        update orders;
+    }
+}
